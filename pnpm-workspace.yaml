@@ -1,0 +1,13 @@
+allowBuilds:
+  # Required by the pinned Vite/Vitest toolchain to verify/select its native
+  # platform binary. No other dependency lifecycle scripts are approved.
+  esbuild: true
+  # The Secret Manager client works without protobufjs lifecycle scripts.
+  protobufjs: false
+overrides:
+  brace-expansion@2.1.4: 2.1.6
+minimumReleaseAgeExclude:
+  - '@vitest/coverage-v8@5.0.0'
+  - '@vitest/mocker@5.0.0'
+  - '@vitest/spy@5.0.0'
+  - vitest@5.0.0

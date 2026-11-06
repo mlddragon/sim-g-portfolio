@@ -1,0 +1,7 @@
+# Starts the workloads again after a failed dependency (see the script).
+[Unit]
+Description=SIM-G workload recovery
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /etc/sim-g/bin/sim-g-recover.sh

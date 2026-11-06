@@ -1,0 +1,37 @@
+# Allowlist-style build context: credentials, state, data and local tooling
+# never reach the image builder. Patterns are recursive where files could nest.
+.git
+.github
+.env
+.env.*
+**/.env
+**/.env.*
+node_modules
+.pnpm-store
+dist
+dist-capacity
+coverage
+tests
+docs
+infra
+deploy
+scripts
+**/.terraform
+**/*.tfstate*
+**/*.tfvars
+**/*.tfvars.json
+**/*.tfplan
+**/*.log
+**/*.key
+**/*.pem
+**/*.p12
+**/*.pfx
+**/*.dump
+**/*.sql.gz
+**/service-account*.json
+**/credentials*.json
+secrets
+.worktrees
+.vscode
+.idea
+**/.DS_Store

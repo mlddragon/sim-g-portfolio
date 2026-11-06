@@ -1,0 +1,68 @@
+# Dependencies and builds
+node_modules/
+dist/
+dist-capacity/
+coverage/
+.turbo/
+.cache/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+service-account*.json
+credentials*.json
+secrets/
+# Track only the approved adapter source/test files, not credential material.
+!/src/adapters/secrets/
+/src/adapters/secrets/*
+!/src/adapters/secrets/environment-secret-provider.ts
+!/src/adapters/secrets/google-secret-manager-provider.ts
+!/tests/unit/secrets/
+/tests/unit/secrets/*
+!/tests/unit/secrets/environment-secret-provider.test.ts
+!/tests/unit/secrets/google-secret-manager-provider.test.ts
+
+# Runtime data and logs
+*.log
+logs/
+data/
+runtime/
+# Runtime composition source is tracked; runtime data elsewhere stays ignored.
+!/src/runtime/
+!/tests/unit/runtime/
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.sql.gz
+
+# Terraform and cloud tooling
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+*.tfplan
+.terraform.lock.hcl.backup
+crash.log
+
+# Test artifacts
+test-results/
+playwright-report/
+.vitest/
+
+# Agent/worktree scratch
+.worktrees/
+.superpowers/
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo

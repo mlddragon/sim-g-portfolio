@@ -1,0 +1,8 @@
+# Reports a stale recent-tier backup (deploy/vm/host/bin/sim-g-backup-stale.sh).
+# It runs no container and reads no host settings.
+[Unit]
+Description=SIM-G recent backup staleness check
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /etc/sim-g/bin/sim-g-backup-stale.sh

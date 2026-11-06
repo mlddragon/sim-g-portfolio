@@ -1,0 +1,7 @@
+coverage/
+dist/
+node_modules/
+pnpm-lock.yaml
+docs/product/family_brain_gateway_prd_v1.md
+docs/engineering/family_brain_gateway_engineering_design_v1.md
+migrations/*.sql

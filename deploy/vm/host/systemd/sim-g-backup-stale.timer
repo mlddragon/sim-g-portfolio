@@ -1,0 +1,10 @@
+# Every 15 minutes, 7 minutes after each recent backup is due. Two
+# consecutive misses are reported 35-50 minutes after the last success
+# (about 37 when runs take seconds).
+[Unit]
+Description=15-minute SIM-G recent backup staleness check
+
+[Timer]
+OnCalendar=*:07/15
+AccuracySec=1s
+Persistent=false

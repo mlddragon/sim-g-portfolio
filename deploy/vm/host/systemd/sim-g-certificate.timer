@@ -1,0 +1,10 @@
+# Twice a day, as Let's Encrypt recommends; certbot renews only within 30
+# days of expiry. After boot as well, for the first certificate; the random
+# delay applies to every trigger, so that run comes 2 to 62 minutes in.
+[Unit]
+Description=Obtain or renew the SIM-G ingress certificate
+
+[Timer]
+OnBootSec=2min
+OnCalendar=*-*-* 00,12:00:00
+RandomizedDelaySec=1h

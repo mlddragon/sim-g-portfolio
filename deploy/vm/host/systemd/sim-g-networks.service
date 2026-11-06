@@ -1,0 +1,11 @@
+# The three Docker bridges (VM design sections 2 and 4), checked or created.
+[Unit]
+Description=SIM-G container networks
+Requires=docker.service
+After=docker.service
+PartOf=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash /etc/sim-g/bin/sim-g-networks.sh

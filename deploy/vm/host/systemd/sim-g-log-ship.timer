@@ -1,0 +1,9 @@
+# Every minute, so a host event reaches the alerts within about a minute.
+# Runs during maintenance too: operator work must not hide host events.
+[Unit]
+Description=Minute SIM-G host log shipping
+
+[Timer]
+OnCalendar=*:*:30
+AccuracySec=5s
+Persistent=false

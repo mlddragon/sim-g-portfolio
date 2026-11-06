@@ -1,0 +1,6 @@
+[Unit]
+Description=Poll the SIM-G deploy pointer
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=2min

@@ -1,0 +1,12 @@
+# Ships the host units' structured lines to Cloud Logging
+# (deploy/vm/host/bin/sim-g-log-ship.sh). It runs no container and reads no
+# host settings; it needs only the metadata server and Cloud Logging.
+[Unit]
+Description=SIM-G host log shipping
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /etc/sim-g/bin/sim-g-log-ship.sh
+TimeoutStartSec=50s

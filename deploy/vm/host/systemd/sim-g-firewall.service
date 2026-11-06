@@ -1,0 +1,13 @@
+# Metadata-server isolation (VM design section 4). Every container unit
+# requires it, so no container starts without the rule (fail closed). It is
+# re-applied with Docker, which rebuilds its chains on restart.
+[Unit]
+Description=SIM-G host firewall rules
+Requires=docker.service sim-g-networks.service
+After=docker.service sim-g-networks.service
+PartOf=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash /etc/sim-g/bin/sim-g-firewall.sh

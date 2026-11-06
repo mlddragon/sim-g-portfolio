@@ -1,0 +1,20 @@
+# The gateway: no published port, reachable only on the internal bridge
+# (VM design sections 2 and 3). The nginx ingress (sim-g-edge) reaches it.
+[Unit]
+Description=SIM-G gateway
+Requires=docker.service sim-g-data-disk.service sim-g-firewall.service sim-g-postgres.service
+After=docker.service sim-g-data-disk.service sim-g-firewall.service sim-g-postgres.service
+StartLimitIntervalSec=0
+
+[Service]
+ExecStartPre=-/usr/bin/docker rm --force sim-g-gateway
+# The host settings are read and validated by the wrapper, never loaded
+# by systemd.
+ExecStart=/bin/bash /etc/sim-g/bin/sim-g-host-env.sh /etc/sim-g/bin/sim-g-gateway.sh
+ExecStop=/usr/bin/docker stop --time 30 sim-g-gateway
+TimeoutStopSec=45
+Restart=always
+RestartSec=5
+# Maintenance or a missing configuration document (sim-g-gateway.sh);
+# sim-g-recover.timer retries every 5 minutes.
+RestartPreventExitStatus=3

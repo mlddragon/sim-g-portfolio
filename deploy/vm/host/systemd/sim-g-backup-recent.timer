@@ -1,0 +1,10 @@
+# Every 15 minutes on the quarter hour, without random delay. A missed run
+# is not caught up: the next one is due within 15 minutes, and the
+# staleness check reports two consecutive misses.
+[Unit]
+Description=15-minute SIM-G encrypted database backup
+
+[Timer]
+OnCalendar=*:00/15
+AccuracySec=1s
+Persistent=false

@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": ".",
+    "outDir": "dist-capacity",
+    "sourceMap": false,
+    "declaration": false
+  },
+  "include": [],
+  "files": ["tests/capacity/gateway-under-test.ts"]
+}

@@ -1,0 +1,4 @@
+schemaVersion: 1
+version: project-registry-v1-pending
+canonicalMarker: PENDING_DEV_PROJECT_REGISTRY_BINDING
+repositories: []

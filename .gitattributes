@@ -1,0 +1,12 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.lock -diff
+
+# Preserve the approved source documents byte-for-byte, including intentional
+# Markdown hard-break spaces present in the supplied originals.
+docs/product/family_brain_gateway_prd_v1.md whitespace=-blank-at-eol
+docs/engineering/family_brain_gateway_engineering_design_v1.md whitespace=-blank-at-eol

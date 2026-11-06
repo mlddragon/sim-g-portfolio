@@ -1,0 +1,21 @@
+# PostgreSQL with no network and no TCP listener (VM design section 6).
+[Unit]
+Description=SIM-G PostgreSQL
+Requires=docker.service sim-g-data-disk.service sim-g-firewall.service
+After=docker.service sim-g-data-disk.service sim-g-firewall.service
+StartLimitIntervalSec=0
+
+[Service]
+ExecStartPre=-/usr/bin/docker rm --force sim-g-postgres
+# The host settings are read and validated by the wrapper, never loaded
+# by systemd.
+ExecStart=/bin/bash /etc/sim-g/bin/sim-g-host-env.sh /etc/sim-g/bin/sim-g-postgres.sh
+# Active only once the server answers on its socket. Start-up includes the
+# image pull on a new boot disk (up to 9 minutes) and then 60 readiness
+# attempts, so the start timeout covers both.
+ExecStartPost=/bin/bash /etc/sim-g/bin/sim-g-postgres-ready.sh
+TimeoutStartSec=12min
+ExecStop=/usr/bin/docker stop --time 60 sim-g-postgres
+TimeoutStopSec=90
+Restart=always
+RestartSec=10

@@ -1,0 +1,15 @@
+schemaVersion: 1
+version: synthetic-project-registry-v1
+canonicalMarker: SYNTHETIC_PROJECT_REGISTRY_V1
+repositories:
+  - repository: synthetic-owner/synthetic-family-knowledge
+    projectKey: synthetic-family-knowledge
+    scopes: [family_shared]
+    knowledgePaths:
+      - README.md
+      - docs/
+  - repository: synthetic-owner/synthetic-governance
+    projectKey: synthetic-governance
+    scopes: [governance]
+    knowledgePaths:
+      - governance/

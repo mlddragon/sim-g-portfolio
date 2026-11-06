@@ -1,0 +1,95 @@
+schemaVersion: 1
+version: family-brain-v1.2.0
+correctionWindowMs: 900000
+elevationTtlMs: 300000
+
+roleScopes:
+  owner_operator:
+    - family_shared
+    - parent_and_stewardship
+    - governance
+    - security
+    - legal
+  parent_steward:
+    - family_shared
+    - parent_and_stewardship
+    - legal
+  family_participant:
+    - family_shared
+
+roleOperations:
+  owner_operator:
+    - search_brain
+    - fetch_record
+    - persist_knowledge
+    - update_record
+    - append_to_record
+    - delete_record
+    - list_approvals
+    - resolve_approval
+  parent_steward:
+    - search_brain
+    - fetch_record
+    - persist_knowledge
+    - update_record
+    - append_to_record
+    - delete_record
+    - list_approvals
+    - resolve_approval
+  family_participant:
+    - search_brain
+    - fetch_record
+    - persist_knowledge
+    - update_record
+    - append_to_record
+    - delete_record
+
+controlPlaneScopes:
+  - governance
+  - security
+
+protectedMutationScopes:
+  - legal
+
+# Owner decision 2026-10-22: original evidence under legal hold is immutable
+# through the gateway. New evidence and commentary are separate linked records.
+legalHoldEvidence: immutable
+
+routing:
+  notionRecordTypes:
+    - structured_record
+    - knowledge
+    - decision
+    - procedure
+  driveRecordTypes:
+    - source_document
+    - file_artifact
+    - legal_record
+  containers:
+    notion:
+      family_shared: notion.family_shared
+      parent_and_stewardship: notion.parent_and_stewardship
+      restricted: notion.restricted
+      protected: notion.protected
+    drive:
+      family_shared: drive.family_shared
+      parent_and_stewardship: drive.parent_and_stewardship
+      restricted: drive.restricted
+      protected: drive.protected
+
+# Owner decision 2026-10-24: record policy for each governed routing container,
+# identical for Notion and Drive. The generic restricted container is not
+# registered; narrowly authorized restricted roots will be defined separately.
+containerPolicies:
+  family_shared:
+    scope: family_shared
+    sensitivity: family_shared
+    protectedClass: none
+  parent_and_stewardship:
+    scope: parent_and_stewardship
+    sensitivity: parent_and_stewardship
+    protectedClass: none
+  protected:
+    scope: legal
+    sensitivity: protected
+    protectedClass: protected

@@ -1,0 +1,12 @@
+# Obtains or renews the ingress certificate (see the script).
+[Unit]
+Description=SIM-G ingress certificate
+Requires=docker.service sim-g-data-disk.service sim-g-firewall.service
+After=docker.service sim-g-data-disk.service sim-g-firewall.service sim-g-edge.service
+
+[Service]
+Type=oneshot
+TimeoutStartSec=10min
+# The host settings are read and validated by the wrapper, never loaded
+# by systemd.
+ExecStart=/bin/bash /etc/sim-g/bin/sim-g-host-env.sh /etc/sim-g/bin/sim-g-certificate.sh

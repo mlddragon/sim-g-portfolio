@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "executablePolicy": {
+    "version": "family-brain-v1.2.0",
+    "contentSha256": "40a9bd3559050bd146b862ab68140f229f68a5fd7fcaa28dd353ab860d61cfc9"
+  },
+  "canonicalGovernance": {
+    "bindingStatus": "pending",
+    "version": "canonical-governance-v1-pending",
+    "contentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "canonicalMarker": "PENDING_DEV_GOVERNANCE_BINDING",
+    "sourceReferenceEnvironmentVariable": "FAMILY_BRAIN_GOVERNANCE_SOURCE_REF"
+  }
+}

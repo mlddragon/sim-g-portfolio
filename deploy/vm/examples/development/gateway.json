@@ -1,0 +1,158 @@
+{
+  "environment": "development",
+  "secrets": {
+    "provider": "google_secret_manager",
+    "projectNumber": "100000000001",
+    "bindings": {
+      "database_development": "family-brain-database-url",
+      "notion_development": "family-brain-notion-token",
+      "github_development": "family-brain-github-app-key"
+    }
+  },
+  "server": { "port": 8080, "logLevel": "info" },
+  "database": {
+    "connectionSecret": {
+      "environment": "development",
+      "name": "database_development"
+    }
+  },
+  "identity": {
+    "issuer": "https://accounts.google.com",
+    "audience": "REPLACE-dev-oauth-client-id.apps.googleusercontent.com",
+    "hostedDomain": "example.invalid"
+  },
+  "policy": {
+    "executablePolicy": {
+      "environment": "development",
+      "reference": "config://development/policy"
+    },
+    "governanceSource": {
+      "environment": "development",
+      "reference": "governance://development/canonical"
+    },
+    "projectRegistry": {
+      "environment": "development",
+      "reference": "registry://development/projects"
+    }
+  },
+  "providers": {
+    "notion": {
+      "machineIdentity": {
+        "environment": "development",
+        "id": "notion-integration-sim-g-qa-development"
+      },
+      "credential": {
+        "environment": "development",
+        "kind": "secret",
+        "name": "notion_development"
+      },
+      "roots": [
+        {
+          "environment": "development",
+          "container": "family_shared",
+          "object": {
+            "kind": "data_source",
+            "id": "00000000-0000-4000-8000-0000000000a1"
+          },
+          "displayPath": "SIM-G QA (fictional) / Family Shared",
+          "mutationPropertyIds": {
+            "title": "title",
+            "operationMarker": "REPLACE-marker-property-id",
+            "contentType": "REPLACE-type-property-id",
+            "contentHash": "REPLACE-hash-property-id"
+          }
+        },
+        {
+          "environment": "development",
+          "container": "parent_and_stewardship",
+          "object": {
+            "kind": "page",
+            "id": "00000000-0000-4000-8000-0000000000a2"
+          },
+          "displayPath": "SIM-G QA (fictional) / Parent and Stewardship"
+        },
+        {
+          "environment": "development",
+          "container": "protected",
+          "object": {
+            "kind": "page",
+            "id": "00000000-0000-4000-8000-0000000000a3"
+          },
+          "displayPath": "SIM-G QA (fictional) / Protected"
+        }
+      ],
+      "familyInbox": {
+        "environment": "development",
+        "dataSourceId": "00000000-0000-4000-8000-0000000000a9",
+        "propertyIds": {
+          "title": "title",
+          "approvalRequestId": "REPLACE-approval-request-id",
+          "operationId": "REPLACE-operation-id",
+          "requestId": "REPLACE-request-id",
+          "requestedBy": "REPLACE-requested-by",
+          "action": "REPLACE-action",
+          "safeTargetDescription": "REPLACE-safe-target",
+          "status": "REPLACE-status",
+          "safeResolutionReason": "REPLACE-safe-reason"
+        },
+        "statusOptionIds": {
+          "pending": "REPLACE-option-pending",
+          "approved": "REPLACE-option-approved",
+          "declined": "REPLACE-option-declined",
+          "cancelled": "REPLACE-option-cancelled",
+          "superseded": "REPLACE-option-superseded",
+          "impossible": "REPLACE-option-impossible"
+        }
+      }
+    },
+    "drive": {
+      "machineIdentity": {
+        "environment": "development",
+        "id": "fbg-drive@replace-dev-project.iam.gserviceaccount.com"
+      },
+      "credential": {
+        "environment": "development",
+        "kind": "workload_identity",
+        "name": "drive_development"
+      },
+      "roots": [
+        {
+          "environment": "development",
+          "container": "family_shared",
+          "folderId": "REPLACE-family-shared-folder-id",
+          "sharedDriveId": "REPLACE-qa-shared-drive-id",
+          "displayPath": "SIM-G QA (fictional) / Family Shared"
+        },
+        {
+          "environment": "development",
+          "container": "parent_and_stewardship",
+          "folderId": "REPLACE-parent-folder-id",
+          "sharedDriveId": "REPLACE-qa-shared-drive-id",
+          "displayPath": "SIM-G QA (fictional) / Parent and Stewardship"
+        },
+        {
+          "environment": "development",
+          "container": "protected",
+          "folderId": "REPLACE-protected-folder-id",
+          "sharedDriveId": "REPLACE-qa-shared-drive-id",
+          "displayPath": "SIM-G QA (fictional) / Protected"
+        }
+      ]
+    },
+    "github": {
+      "machineIdentity": {
+        "environment": "development",
+        "id": "github-app-sim-g-qa-development"
+      },
+      "credential": {
+        "environment": "development",
+        "kind": "secret",
+        "name": "github_development"
+      },
+      "projectRegistry": {
+        "environment": "development",
+        "reference": "registry://development/projects"
+      }
+    }
+  }
+}

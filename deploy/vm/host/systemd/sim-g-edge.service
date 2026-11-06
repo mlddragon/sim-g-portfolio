@@ -1,0 +1,16 @@
+# The nginx ingress, the only published service (VM design sections 3 and 4).
+[Unit]
+Description=SIM-G ingress (nginx)
+Requires=docker.service sim-g-data-disk.service sim-g-firewall.service
+After=docker.service sim-g-data-disk.service sim-g-firewall.service
+StartLimitIntervalSec=0
+
+[Service]
+ExecStartPre=-/usr/bin/docker rm --force sim-g-edge
+# The host settings are read and validated by the wrapper, never loaded
+# by systemd.
+ExecStart=/bin/bash /etc/sim-g/bin/sim-g-host-env.sh /etc/sim-g/bin/sim-g-edge.sh
+ExecStop=/usr/bin/docker stop --time 10 sim-g-edge
+TimeoutStopSec=20
+Restart=always
+RestartSec=5

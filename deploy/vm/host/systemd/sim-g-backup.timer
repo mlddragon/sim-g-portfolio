@@ -1,0 +1,8 @@
+# Daily, early morning in the US; a missed run starts at the next boot.
+[Unit]
+Description=Daily SIM-G encrypted database backup
+
+[Timer]
+OnCalendar=*-*-* 09:15:00 UTC
+RandomizedDelaySec=15min
+Persistent=true

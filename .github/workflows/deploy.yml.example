@@ -1,0 +1,99 @@
+name: Deploy
+
+# Development only, from main after CI has passed for the exact commit (VM
+# design section 10, PLAN Task 13): automatically when CI succeeds on a push
+# to main, or by hand (owner ruling 2026-11-04, development only). The
+# development GitHub environment holds the variables below. Workload identity
+# federation accepts only this workflow, on main, in that environment, from
+# those two events (infra/google/modules/vm/federation.tf); the other
+# environment accepts only a manual dispatch. Promotion is a later slice.
+on:
+  workflow_dispatch: {}
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-development
+  cancel-in-progress: false
+
+jobs:
+  development:
+    name: Deploy to development
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    # An automatic run needs CI's own success on a push to main in this
+    # repository; a pull request or a fork's branch named main never deploys.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.head_repository.full_name == github.repository)
+    environment: development
+    env:
+      # CI's commit, not whatever main points to when this run starts.
+      DEPLOY_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    steps:
+      - name: Refuse anything but main
+        if: github.ref != 'refs/heads/main'
+        run: exit 1
+
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ env.DEPLOY_SHA }}
+          persist-credentials: false
+
+      - name: Require passing CI for this exact commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          conclusion="$(gh run list --repo "${GITHUB_REPOSITORY}" --workflow ci.yml \
+            --commit "${DEPLOY_SHA}" --branch main --event push --limit 1 \
+            --json conclusion --jq '.[0].conclusion // ""')"
+          if [[ "${conclusion}" != success ]]; then
+            echo "CI has not passed for ${DEPLOY_SHA} on main" >&2
+            exit 1
+          fi
+
+      - name: Skip a commit main has moved past
+        id: current
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tip="$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq .sha)"
+          if [[ "${tip}" != "${DEPLOY_SHA}" ]]; then
+            echo "main is at ${tip}; its own run deploys it" >>"${GITHUB_STEP_SUMMARY}"
+            echo "deploy=false" >>"${GITHUB_OUTPUT}"
+          else
+            echo "deploy=true" >>"${GITHUB_OUTPUT}"
+          fi
+
+      - name: Authenticate with workload identity federation
+        if: steps.current.outputs.deploy == 'true'
+        id: auth
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOYER_SERVICE_ACCOUNT }}
+          token_format: access_token
+          access_token_lifetime: 1200s
+          create_credentials_file: false
+          export_environment_variables: false
+
+      - name: Build, push and point
+        if: steps.current.outputs.deploy == 'true'
+        env:
+          SIM_G_REGISTRY: ${{ vars.SIM_G_REGISTRY }}
+          SIM_G_DEPLOY_BUCKET: ${{ vars.SIM_G_DEPLOY_BUCKET }}
+          SIM_G_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+        run: bash scripts/deploy/push-images.sh >>"${GITHUB_STEP_SUMMARY}"

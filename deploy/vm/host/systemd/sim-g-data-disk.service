@@ -1,0 +1,12 @@
+# Mounts the persistent data disk; formats it only when it has no signature.
+[Unit]
+Description=SIM-G data disk
+# Waits for udev to publish the disk (or fails after the device timeout).
+Requires=dev-disk-by\x2did-google\x2dsim\x2dg\x2ddata.device
+After=dev-disk-by\x2did-google\x2dsim\x2dg\x2ddata.device
+Before=sim-g-postgres.service sim-g-gateway.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash /etc/sim-g/bin/sim-g-data-disk.sh

@@ -1,0 +1,6 @@
+[Unit]
+Description=Retry SIM-G workloads after a failed dependency
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=5min

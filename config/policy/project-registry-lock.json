@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "kind": "project_registry",
+  "bindingStatus": "pending",
+  "version": "project-registry-v1-pending",
+  "contentSha256": "851d558a065761cb329ca08bfa1de2605b0e57794ffe6ae97c354771da2f0e23",
+  "canonicalMarker": "PENDING_DEV_PROJECT_REGISTRY_BINDING",
+  "sourceReferenceEnvironmentVariable": "FAMILY_BRAIN_PROJECT_REGISTRY_SOURCE_REF"
+}

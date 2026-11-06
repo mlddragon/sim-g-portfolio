@@ -1,0 +1,5 @@
+# Every SIM-G workload on the e2-micro VM (VM design section 2). cloud-init
+# starts it on each boot; COS /etc is stateless, so nothing is enabled.
+[Unit]
+Description=SIM-G gateway host workloads
+Wants=sim-g-postgres.service sim-g-gateway.service sim-g-edge.service sim-g-certificate.timer sim-g-backup.timer sim-g-backup-recent.timer sim-g-backup-stale.timer sim-g-log-ship.timer sim-g-recover.timer sim-g-deploy-watch.timer
